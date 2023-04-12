@@ -135,7 +135,19 @@ end
 """
     digits_solver(goal::Int, digits::Vector{Int})
 
-TBW
+Solve a *New York Times* digits problem. `goal` is the number to 
+achieve and `digits` is a list (vector) containing the values with
+which to work.
+
+Example:
+```
+julia> digits_solver(264, [4,5,6,7,9,25])
+[4, 5, 6, 7, 9, 25] → 25 × 6 = 150 → [4, 5, 7, 9, 150]
+[4, 5, 7, 9, 150] → 9 × 4 = 36 → [5, 7, 36, 150]
+[5, 7, 36, 150] → 7 - 5 = 2 → [2, 36, 150]
+[2, 36, 150] → 150 × 2 = 300 → [36, 300]
+[36, 300] → 300 - 36 = 264 → [264]
+```
 """
 function digits_solver(goal::Int, digits::Vector{Int})
     start_vertex, last_vertex, G, edge_labels = make_structures(goal,digits);
@@ -150,5 +162,7 @@ function digits_solver(goal::Int, digits::Vector{Int})
     end
 
 end
+
+digits_solver(n::Int, thing) = digits_solver(n, collect(thing))
 
 end # module DigitsSolver

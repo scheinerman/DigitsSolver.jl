@@ -19,3 +19,7 @@ julia> digits_solver(264, [4,5,6,7,9,25])
 ```
 
 See also [this code](https://github.com/scheinerman/TwentyFour.jl) for solving Twenty Four puzzles.
+
+## To Do
+
+Give a sensible output if there is no solution.
