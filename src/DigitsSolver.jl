@@ -1,6 +1,6 @@
 module DigitsSolver
 
-using SimpleGraphs, ShowSet
+using SimpleGraphs
 
 export digits_solver
 

@@ -4,5 +4,4 @@ authors = ["Ed Scheinerman <ers@jhu.edu>"]
 version = "0.0.1"
 
 [deps]
-ShowSet = "fa774e86-460a-546b-b195-92e8193e3324"
 SimpleGraphs = "55797a34-41de-5266-9ec1-32ac4eb504d3"
