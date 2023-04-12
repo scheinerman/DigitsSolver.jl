@@ -2,7 +2,8 @@
 Solve *New York Times* digits puzzles.
 
 For example, here is how to solve this puzzle:
-![](./digits-example.png)
+
+<center><img src="digits-example.png" alt= “” width="451" height="422"></center>
 
 ```
 julia> using DigitsSolver
