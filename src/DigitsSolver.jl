@@ -4,7 +4,7 @@ using SimpleGraphs, ShowSet
 
 export digits_solver
 
-export make_structures, extract!  # debug
+export make_structures  # debug
 
 # The vertex type for a Digits graph is a Vector{Int} in which we
 # keep the elements in increasing order.
@@ -132,6 +132,11 @@ function extract!(w::Vtype, i, j)::Tuple{Int,Int}
 end
 
 
+"""
+    digits_solver(goal::Int, digits::Vector{Int})
+
+TBW
+"""
 function digits_solver(goal::Int, digits::Vector{Int})
     start_vertex, last_vertex, G, edge_labels = make_structures(goal,digits);
 
