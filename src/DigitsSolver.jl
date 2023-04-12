@@ -2,6 +2,7 @@ module DigitsSolver
 
 using SimpleGraphs, ShowSet
 
+export digits_solver
 
 export make_structures, extract!  # debug
 
@@ -41,22 +42,72 @@ function make_structures(goal::Int, elements::Vtype)
             last_vertex = v
             break
         end
-
         sz = length(v)
         # ADDITION
         for i = 1:sz-1
             for j = i+1:sz
                 w = copy(v)
-                a,b = extract!(w,i,j)
-                c = a+b 
+                a, b = extract!(w, i, j)
+                c = a + b
                 append!(w, c)
                 sort!(w)
-                add!(G,v,w)
+                add!(G, v, w)
                 lab = "$b + $a = $c"
-                edge_labels[v,w] = lab
-                edge_labels[w,v] = lab
+                edge_labels[v, w] = lab
+                edge_labels[w, v] = lab
                 push!(todo, w)
 
+            end
+        end
+
+        # MUTIPLICATION
+        for i = 1:sz-1
+            for j = i+1:sz
+                w = copy(v)
+                a, b = extract!(w, i, j)
+                c = b * a
+                append!(w, c)
+                sort!(w)
+                add!(G, v, w)
+                lab = "$b × $a = $c"
+                edge_labels[v, w] = lab
+                edge_labels[w, v] = lab
+                push!(todo, w)
+            end
+        end
+
+        # SUBTRACTION
+        for i = 1:sz-1
+            for j = i+1:sz
+                w = copy(v)
+                a, b = extract!(w, i, j)
+                c = b - a
+                append!(w, c)
+                sort!(w)
+                add!(G, v, w)
+                lab = "$b - $a = $c"
+                edge_labels[v, w] = lab
+                edge_labels[w, v] = lab
+                push!(todo, w)
+            end
+        end
+
+        # DIVISION
+        for i = 1:sz-1
+            for j = i+1:sz
+                w = copy(v)
+                a, b = extract!(w, i, j)
+                if b%a != 0
+                    continue
+                end
+                c = b ÷ a
+                append!(w, c)
+                sort!(w)
+                add!(G, v, w)
+                lab = "$b ÷ $a = $c"
+                edge_labels[v, w] = lab
+                edge_labels[w, v] = lab
+                push!(todo, w)
             end
         end
     end
@@ -73,9 +124,23 @@ Given a list of integers `w` remove elements `i` and `j` from `w`
 function extract!(w::Vtype, i, j)::Tuple{Int,Int}
     a = w[i]
     b = w[j]
-    deleteat!(w,(i,j))
-    return a,b
+    deleteat!(w, (i, j))
+    return a, b
 end
 
+
+function digits_solver(goal::Int, digits::Vector{Int})
+    start_vertex, last_vertex, G, edge_labels = make_structures(goal,digits);
+
+    P = find_path(G, start_vertex,last_vertex)
+    n = length(P)-1
+
+    for k=1:n 
+        print(P[k], " → ")
+        print(edge_labels[P[k],P[k+1]], " → ")
+        println(P[k+1])
+    end
+
+end
 
 end # module DigitsSolver
