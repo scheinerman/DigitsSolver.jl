@@ -14,3 +14,5 @@ julia> digits_solver(264, [4,5,6,7,9,25])
 [2, 36, 150] → 150 × 2 = 300 → [36, 300]
 [36, 300] → 300 - 36 = 264 → [264]
 ```
+
+See also [this code](https://github.com/scheinerman/TwentyFour.jl) for solving Twenty Four puzzles.
