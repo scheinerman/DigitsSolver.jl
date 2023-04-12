@@ -18,14 +18,11 @@ Vtype = Vector{Int}
 
 Create the necessary graph and edge labels to solve the puzzle.
 Returns a tuple with the following elements:
-* Starting vertex
-* Ending vertex 
 * Graph 
 * Edge labels
 """
 function make_structures(goal::Int, elements::Vtype)
     start_vertex = sort(elements)
-    last_vertex = Int[]
 
     G = UG{Vtype}()
     edge_labels = Dict{Tuple{Vtype,Vtype},String}()
@@ -38,10 +35,6 @@ function make_structures(goal::Int, elements::Vtype)
         v = first(todo)
         delete!(todo, v)
 
-        if goal ∈ v
-            last_vertex = v
-            break
-        end
         sz = length(v)
         # ADDITION
         for i = 1:sz-1
@@ -98,9 +91,9 @@ function make_structures(goal::Int, elements::Vtype)
                 w = copy(v)
                 a, b = extract!(w, i, j)
                 if a == 0
-                    continue 
+                    continue
                 end
-                if b%a != 0
+                if b % a != 0
                     continue
                 end
                 c = b ÷ a
@@ -115,7 +108,19 @@ function make_structures(goal::Int, elements::Vtype)
         end
     end
 
-    return start_vertex, last_vertex, G, edge_labels
+    # add edges to [goal]
+
+    v_goal = [goal]
+
+    VV = vlist(G)
+    for v ∈ VV
+        if goal ∈ v
+            add!(G, v, v_goal)
+        end
+    end
+    add!(G, v_goal) # just in case unreachable
+
+    return G, edge_labels
 end
 
 """
@@ -142,34 +147,36 @@ which to work.
 Example:
 ```
 julia> digits_solver(264, [4,5,6,7,9,25])
-[4, 5, 6, 7, 9, 25] → 25 × 6 = 150 → [4, 5, 7, 9, 150]
-[4, 5, 7, 9, 150] → 9 × 4 = 36 → [5, 7, 36, 150]
-[5, 7, 36, 150] → 7 - 5 = 2 → [2, 36, 150]
-[2, 36, 150] → 150 × 2 = 300 → [36, 300]
-[36, 300] → 300 - 36 = 264 → [264]
+[4, 5, 6, 7, 9, 25] → 25 + 5 = 30 → [4, 6, 7, 9, 30]
+[4, 6, 7, 9, 30] → 30 × 9 = 270 → [4, 6, 7, 270]
+[4, 6, 7, 270] → 270 - 6 = 264 → [4, 7, 264]
 ```
 """
 function digits_solver(goal::Int, digits::Vector{Int})
+    digits = sort(digits)
 
-    if goal ∈ digits 
+    if goal ∈ digits
         print("$goal already in $digits")
-        return 
-    end 
-
-    start_vertex, last_vertex, G, edge_labels = make_structures(goal,digits);
-
-    if length(last_vertex) == 0
-        println("No solution")
-        return 
+        return
     end
 
-    P = find_path(G, start_vertex,last_vertex)
-    n = length(P)-1
+    G, edge_labels = make_structures(goal, digits)
 
-    for k=1:n 
+    if deg(G, [goal]) == 0
+        println("No solution")
+        return
+    end
+
+    P = find_path(G, digits, [goal])
+    n = length(P) - 1
+
+    for k = 1:n
         print(P[k], " → ")
-        print(edge_labels[P[k],P[k+1]], " → ")
+        print(edge_labels[P[k], P[k+1]], " → ")
         println(P[k+1])
+        if goal ∈ P[k+1]
+            break
+        end
     end
 
 end

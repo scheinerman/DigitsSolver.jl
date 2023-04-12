@@ -1,7 +1,7 @@
 name = "DigitsSolver"
 uuid = "efbfe01b-ec86-4673-a6a2-31082c22ec9a"
 authors = ["Ed Scheinerman <ers@jhu.edu>"]
-version = "0.0.1"
+version = "0.0.2"
 
 [deps]
 SimpleGraphs = "55797a34-41de-5266-9ec1-32ac4eb504d3"
