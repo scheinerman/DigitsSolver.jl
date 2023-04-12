@@ -97,6 +97,9 @@ function make_structures(goal::Int, elements::Vtype)
             for j = i+1:sz
                 w = copy(v)
                 a, b = extract!(w, i, j)
+                if a == 0
+                    continue 
+                end
                 if b%a != 0
                     continue
                 end
