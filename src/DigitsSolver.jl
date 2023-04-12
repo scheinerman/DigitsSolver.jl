@@ -150,7 +150,18 @@ julia> digits_solver(264, [4,5,6,7,9,25])
 ```
 """
 function digits_solver(goal::Int, digits::Vector{Int})
+
+    if goal ∈ digits 
+        print("$goal already in $digits")
+        return 
+    end 
+
     start_vertex, last_vertex, G, edge_labels = make_structures(goal,digits);
+
+    if length(last_vertex) == 0
+        println("No solution")
+        return 
+    end
 
     P = find_path(G, start_vertex,last_vertex)
     n = length(P)-1

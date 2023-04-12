@@ -18,8 +18,16 @@ julia> digits_solver(264, [4,5,6,7,9,25])
 [36, 300] → 300 - 36 = 264 → [264]
 ```
 
+In case no answer exists:
+```
+julia> digits_solver(200,1:5)
+No solution
+
+julia> digits_solver(200,1:6)
+[1, 2, 3, 4, 5, 6] → 4 + 3 = 7 → [1, 2, 5, 6, 7]
+[1, 2, 5, 6, 7] → 7 × 6 = 42 → [1, 2, 5, 42]
+[1, 2, 5, 42] → 42 - 2 = 40 → [1, 5, 40]
+[1, 5, 40] → 40 × 5 = 200 → [1, 200]
+```
+
 See also [this code](https://github.com/scheinerman/TwentyFour.jl) for solving Twenty Four puzzles.
-
-## To Do
-
-Give a sensible output if there is no solution.
