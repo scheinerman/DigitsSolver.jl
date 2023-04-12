@@ -1,5 +1,5 @@
 # `DigitsSolver`
-Solve *New York Times* digits puzzles.
+Solve *New York Times* [digits puzzles](https://www.nytimes.com/games/digits).
 
 For example, here is how to solve this puzzle:
 
