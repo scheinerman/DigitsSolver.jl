@@ -29,4 +29,43 @@ julia> digits_solver(200,1:6)
 [5, 40] → 40 × 5 = 200 → [200]
 ```
 
-See also [this code](https://github.com/scheinerman/TwentyFour.jl) for solving Twenty Four puzzles.
+## Faster or shorter?
+
+By default, `digits_solver` stops working upon finding the first possible solution. That solution
+might entail more steps than necessary. If called with an optional third argument `quick_stop` 
+set to `false`, then the function will work harder and may find a shorter solution.
+```
+julia> @time digits_solver(290, 5:10)
+[5, 6, 7, 8, 9, 10] → 8 × 5 = 40 → [6, 7, 9, 10, 40]
+[6, 7, 9, 10, 40] → 40 × 9 = 360 → [6, 7, 10, 360]
+[6, 7, 10, 360] → 10 × 7 = 70 → [6, 70, 360]
+[6, 70, 360] → 360 - 70 = 290 → [6, 290]
+  0.017439 seconds (115.70 k allocations: 7.792 MiB)
+
+julia> @time digits_solver(290, 5:10, false)
+[5, 6, 7, 8, 9, 10] → 8 × 5 = 40 → [6, 7, 9, 10, 40]
+[6, 7, 9, 10, 40] → 40 × 7 = 280 → [6, 9, 10, 280]
+[6, 9, 10, 280] → 280 + 10 = 290 → [6, 9, 290]
+  1.353365 seconds (7.93 M allocations: 370.520 MiB, 11.99% gc time)
+```
+
+Here is a more extreme example:
+```
+julia> @time digits_solver(289, 5:11)
+[5, 6, 7, 8, 9, 10, 11] → 10 × 8 = 80 → [5, 6, 7, 9, 11, 80]
+[5, 6, 7, 9, 11, 80] → 11 - 7 = 4 → [4, 5, 6, 9, 80]
+[4, 5, 6, 9, 80] → 80 - 9 = 71 → [4, 5, 6, 71]
+[4, 5, 6, 71] → 71 × 4 = 284 → [5, 6, 284]
+[5, 6, 284] → 284 + 5 = 289 → [6, 289]
+  0.015777 seconds (66.25 k allocations: 5.397 MiB)
+
+julia> @time digits_solver(289, 5:11, false)
+[5, 6, 7, 8, 9, 10, 11] → 10 + 7 = 17 → [5, 6, 8, 9, 11, 17]
+[5, 6, 8, 9, 11, 17] → 11 + 6 = 17 → [5, 8, 9, 17, 17]
+[5, 8, 9, 17, 17] → 17 × 17 = 289 → [5, 8, 9, 289]
+205.565965 seconds (252.44 M allocations: 10.645 GiB, 1.46% gc time)
+```
+
+## Twenty Four game 
+
+See also [this code](https://github.com/scheinerman/TwentyFour.jl) for solving Twenty Four cards. They are very similar to these puzzles.

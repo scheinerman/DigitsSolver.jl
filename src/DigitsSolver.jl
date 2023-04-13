@@ -21,7 +21,7 @@ Returns a tuple with the following elements:
 * Graph 
 * Edge labels
 """
-function make_structures(goal::Int, elements::Vtype)
+function make_structures(goal::Int, elements::Vtype, quick_stop::Bool = false)
     start_vertex = sort(elements)
 
     G = UG{Vtype}()
@@ -34,6 +34,10 @@ function make_structures(goal::Int, elements::Vtype)
     while !isempty(todo)
         v = first(todo)
         delete!(todo, v)
+
+        if quick_stop && goal ∈ v
+            break
+        end
 
         sz = length(v)
         # ADDITION
@@ -138,11 +142,15 @@ end
 
 
 """
-    digits_solver(goal::Int, digits::Vector{Int})
+    digits_solver(goal::Int, digits::Vector{Int}, quick_stop::Bool = true)
 
 Solve a *New York Times* digits problem. `goal` is the number to 
 achieve and `digits` is a list (vector) containing the values with
 which to work.
+
+With `quick_stop` set to `true`, the computer will stop at the first 
+possible solution to the problem. If set to `false`, the process will 
+likely take longer, but a shorter solution might be found. 
 
 Example:
 ```
@@ -152,7 +160,7 @@ julia> digits_solver(264, [4,5,6,7,9,25])
 [4, 6, 7, 270] → 270 - 6 = 264 → [4, 7, 264]
 ```
 """
-function digits_solver(goal::Int, digits::Vector{Int})
+function digits_solver(goal::Int, digits::Vector{Int}, quick_stop::Bool = true)
     digits = sort(digits)
 
     if goal ∈ digits
@@ -160,7 +168,7 @@ function digits_solver(goal::Int, digits::Vector{Int})
         return
     end
 
-    G, edge_labels = make_structures(goal, digits)
+    G, edge_labels = make_structures(goal, digits, quick_stop)
 
     if deg(G, [goal]) == 0
         println("No solution")
@@ -181,6 +189,7 @@ function digits_solver(goal::Int, digits::Vector{Int})
 
 end
 
-digits_solver(n::Int, thing) = digits_solver(n, collect(thing))
+digits_solver(n::Int, thing, quick_stop::Bool = true) =
+    digits_solver(n, collect(thing), quick_stop)
 
 end # module DigitsSolver
