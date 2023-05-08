@@ -192,4 +192,6 @@ end
 digits_solver(n::Int, thing, quick_stop::Bool = true) =
     digits_solver(n, collect(thing), quick_stop)
 
+digits_solver(a::Int, args...) = digits_solver(a, [args...])
+
 end # module DigitsSolver

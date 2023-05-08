@@ -29,6 +29,15 @@ julia> digits_solver(200,1:6)
 [5, 40] → 40 × 5 = 200 → [200]
 ```
 
+Note that `digits_solver` can be used just with a list of arguments like this:
+```
+julia> digits_solver(200,1,2,3,4,5,6)
+[1, 2, 3, 4, 5, 6] → 4 + 3 = 7 → [1, 2, 5, 6, 7]
+[1, 2, 5, 6, 7] → 7 × 6 = 42 → [1, 2, 5, 42]
+[1, 2, 5, 42] → 42 - 2 = 40 → [1, 5, 40]
+[1, 5, 40] → 40 × 5 = 200 → [1, 200]
+```
+
 ## Faster or shorter?
 
 By default, `digits_solver` stops working upon finding the first possible solution. That solution
@@ -65,6 +74,19 @@ julia> @time digits_solver(289, 5:11, false)
 [5, 8, 9, 17, 17] → 17 × 17 = 289 → [5, 8, 9, 289]
 205.565965 seconds (252.44 M allocations: 10.645 GiB, 1.46% gc time)
 ```
+
+> **WARNING** 
+>
+>Note that `digits_solver(a,b,c,d,false)` is not equivalent to `digits_solver(a,[b,c,d],false)` because `false` becomes a zero, and so the code run will be `digits_solver(a,b,c,d,0)`, which is not what's intended. Similarly, `digits_solver(a,b,c,d,true)` executes `digits_solver(a,[b,c,d,1])`.
+```
+julia> digits_solver(10,3,4,5,true)
+[1, 3, 4, 5] → 5 + 4 = 9 → [1, 3, 9]
+[1, 3, 9] → 9 + 1 = 10 → [3, 10]
+
+julia> digits_solver(10,[3,4,5],true)
+No solution
+```
+
 
 ## Twenty Four game 
 
