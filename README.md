@@ -42,7 +42,7 @@ julia> digits_solver(200,1,2,3,4,5,6)
 
 By default, `digits_solver` stops working upon finding the first possible solution. That solution
 might entail more steps than necessary. If called with an optional third argument `quick_stop` 
-set to `false`, then the function will work harder and may find a shorter solution.
+set to `false`, then the function works harder but might find a shorter solution.
 ```
 julia> @time digits_solver(290, 5:10)
 [5, 6, 7, 8, 9, 10] → 8 × 5 = 40 → [6, 7, 9, 10, 40]

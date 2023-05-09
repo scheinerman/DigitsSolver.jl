@@ -148,9 +148,9 @@ Solve a *New York Times* digits problem. `goal` is the number to
 achieve and `digits` is a list (vector) containing the values with
 which to work.
 
-With `quick_stop` set to `true`, the computer will stop at the first 
-possible solution to the problem. If set to `false`, the process will 
-likely take longer, but a shorter solution might be found. 
+With `quick_stop` set to `true` (the default), the computer stops at the first 
+possible solution to the problem. If set to `false`, the process  
+takes more time, but a shorter solution might be found. 
 
 Example:
 ```
@@ -159,6 +159,18 @@ julia> digits_solver(264, [4,5,6,7,9,25])
 [4, 6, 7, 9, 30] → 30 × 9 = 270 → [4, 6, 7, 270]
 [4, 6, 7, 270] → 270 - 6 = 264 → [4, 7, 264]
 ```
+
+There is also an easier-to-type version:
+`digits_solver(goal, digits...)`
+
+Repeating the example from above:
+```
+julia> digits_solver(264,4,5,6,7,9,25)
+[4, 5, 6, 7, 9, 25] → 25 + 5 = 30 → [4, 6, 7, 9, 30]
+[4, 6, 7, 9, 30] → 30 × 9 = 270 → [4, 6, 7, 270]
+[4, 6, 7, 270] → 270 - 6 = 264 → [4, 7, 264]
+```
+Note that `quick_stop` cannot be used with this shorter form.
 """
 function digits_solver(goal::Int, digits::Vector{Int}, quick_stop::Bool = true)
     digits = sort(digits)
