@@ -7,6 +7,8 @@ For example, here is how to solve this puzzle:
     <img src="digits-example.png" alt= “” width="451" height="422">
 </p>
 
+> Note! The New York Times will be discontinuing this puzzle effective August 8, 2023.
+
 ```
 julia> using DigitsSolver
 
